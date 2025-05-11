@@ -145,6 +145,52 @@ Body.BorderSizePixel = 0
 Body.Position = UDim2.new(0.465730786, 0, 0.5, 0)
 Body.Size = UDim2.new(0, 658, 0, 516)
 
+
+-- Lógica para arrastar
+local UserInputService = game:GetService("UserInputService")
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+-- Função para atualizar a posição
+local function update(input)
+    local delta = input.Position - dragStart
+    mainFrame.Position = UDim2.new(
+        startPos.X.Scale, 
+        startPos.X.Offset + delta.X,
+        startPos.Y.Scale, 
+        startPos.Y.Offset + delta.Y
+    )
+end
+
+-- Conectar eventos para a barra de título
+title.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = mainFrame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+title.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+
 local bodyCorner = Instance.new("UICorner")
 bodyCorner.CornerRadius = UDim.new(0, 4)
 bodyCorner.Name = "bodyCorner"
