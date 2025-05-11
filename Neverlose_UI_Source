@@ -1,14 +1,12 @@
-print ("Remastered by @cris.oliveira_oficial ")
-
 local Library = {}
 
-local NeverloseVersion = "v1.0A."
+local NeverloseVersion = "v1.0B."
 
 local TweenService = game:GetService("TweenService")
 local input = game:GetService("UserInputService")
 
 for i,v in next, game.CoreGui:GetChildren() do
-    if v:IsA("ScreenGui") and v.Name == "Neverlose" then
+    if v:IsA("ScreenGui") and v.Name == "Loader_Ui_Alwayslose" then
         v:Destroy() 
     end
 end
@@ -126,154 +124,102 @@ function Library:Window(options)
     SG.Parent = game.CoreGui
     SG.Name = "Neverlose"
 
-local SG = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-SG.ResetOnSpawn = false
+    Body.Name = "Body"
+    Body.Parent = SG
+    Body.AnchorPoint = Vector2.new(0.5, 0.5)
+    Body.BackgroundColor3 = Color3.fromRGB(9, 8, 13)
+    Body.BorderSizePixel = 0
+    Body.Position = UDim2.new(0.465730786, 0, 0.5, 0)
+    Body.Size = UDim2.new(0, 658, 0, 516)
 
--- Blur effect
-local blur = Instance.new("BlurEffect")
-blur.Size = 12
-blur.Parent = game:GetService("Lighting")
+    bodyCorner.CornerRadius = UDim.new(0, 4)
+    bodyCorner.Name = "bodyCorner"
+    bodyCorner.Parent = Body
 
--- Main UI body
-local Body = Instance.new("Frame")
-Body.Name = "Body"
-Body.Parent = SG
-Body.AnchorPoint = Vector2.new(0.5, 0.5)
-Body.BackgroundColor3 = Color3.fromRGB(0, 85, 255) -- Azul principal
-Body.BackgroundTransparency = 0.3
-Body.BorderSizePixel = 0
-Body.Position = UDim2.new(0.465730786, 0, 0.5, 0)
-Body.Size = UDim2.new(0, 658, 0, 516)
+    SideBar.Name = "SideBar"
+    SideBar.Parent = Body
+    SideBar.BackgroundColor3 = Color3.fromRGB(26, 36, 48)
+    SideBar.BorderSizePixel = 0
+    SideBar.Size = UDim2.new(0, 187, 0, 516)
 
+    sidebarCorner.CornerRadius = UDim.new(0, 4)
+    sidebarCorner.Name = "sidebarCorner"
+    sidebarCorner.Parent = SideBar
 
--- Lógica para arrastar
-local UserInputService = game:GetService("UserInputService")
-local dragging
-local dragInput
-local dragStart
-local startPos
+    sbLine.Name = "sbLine"
+    sbLine.Parent = SideBar
+    sbLine.BackgroundColor3 = Color3.fromRGB(15, 23, 36)
+    sbLine.BorderSizePixel = 0
+    sbLine.Position = UDim2.new(0.99490571, 0, 0, 0)
+    sbLine.Size = UDim2.new(0, 3, 0, 516)
 
--- Função para atualizar a posição
-local function update(input)
-    local delta = input.Position - dragStart
-    mainFrame.Position = UDim2.new(
-        startPos.X.Scale, 
-        startPos.X.Offset + delta.X,
-        startPos.Y.Scale, 
-        startPos.Y.Offset + delta.Y
-    )
-end
+    TopBar.Name = "TopBar"
+    TopBar.Parent = Body
+    TopBar.BackgroundColor3 = Color3.fromRGB(9, 8, 13)
+    TopBar.BackgroundTransparency = 0.5
+    TopBar.BorderColor3 = Color3.fromRGB(14, 21, 32)
+    TopBar.BorderSizePixel = 0
+    TopBar.Position = UDim2.new(0.25166446, 0, 0, 0)
+    TopBar.Size = UDim2.new(0, 562, 0, 49)
 
--- Conectar eventos para a barra de título
-title.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        dragStart = input.Position
-        startPos = mainFrame.Position
-        
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
+    tbLine.Name = "tbLine"
+    tbLine.Parent = TopBar
+    tbLine.BackgroundColor3 = Color3.fromRGB(15, 23, 36)
+    tbLine.BorderSizePixel = 0
+    tbLine.Position = UDim2.new(0.0400355868, 0, 1, 0)
+    tbLine.Size = UDim2.new(0, 469, 0, 3)
 
-title.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement then
-        dragInput = input
-    end
-end)
+    Title.Name = "Title"
+    Title.Parent = SideBar
+    Title.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
+    Title.BackgroundTransparency = 0.5
+    Title.BorderSizePixel = 0
+    Title.Position = UDim2.new(0.0614973232, 0, 0.0213178284, 0)
+    Title.Size = UDim2.new(0, 162, 0, 26)
+    Title.Font = Enum.Font.ArialBold
+    Title.Text = options.text
+    Title.TextColor3 = Color3.fromRGB(0, 20, 80)
+    Title.TextSize = 28.000
+    Title.TextWrapped = true
 
-UserInputService.InputChanged:Connect(function(input)
-    if input == dragInput and dragging then
-        update(input)
-    end
-end)
+    --[[saveBtn.Name = "saveBtn"
+    saveBtn.Parent = TopBar
+    saveBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+    saveBtn.BackgroundColor3 = Color3.fromRGB(9, 8, 13)
+    saveBtn.Position = UDim2.new(0.146918148, 0, 0.479591846, 0)
+    saveBtn.Size = UDim2.new(0, 88, 0, 20)
+    saveBtn.AutoButtonColor = false
+    saveBtn.Font = Enum.Font.GothamBold
+    saveBtn.Text = "   Save"
+    saveBtn.TextColor3 = Color3.fromRGB(132, 146, 153)
+    saveBtn.TextSize = 14.000
 
-local bodyCorner = Instance.new("UICorner")
-bodyCorner.CornerRadius = UDim.new(0, 4)
-bodyCorner.Name = "bodyCorner"
-bodyCorner.Parent = Body
+    saveLabel.Name = "saveLabel"
+    saveLabel.Parent = saveBtn
+    saveLabel.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
+    saveLabel.BackgroundTransparency = 0.5
+    saveLabel.BorderSizePixel = 0
+    saveLabel.Position = UDim2.new(0.0862553269, 0, 0.0500000007, 0)
+    saveLabel.Size = UDim2.new(0, 18, 0, 18)
+    saveLabel.Image = "rbxassetid://7999984136"
+    saveLabel.ImageColor3 = Color3.fromRGB(132, 146, 153)
+    ]]
 
--- Sidebar
-local SideBar = Instance.new("Frame")
-SideBar.Name = "SideBar"
-SideBar.Parent = Body
-SideBar.BackgroundColor3 = Color3.fromRGB(0, 50, 150) -- Azul escuro
-SideBar.BackgroundTransparency = 0.2
-SideBar.BorderSizePixel = 0
-SideBar.Size = UDim2.new(0, 187, 0, 516)
+    allPages.Name = "allPages"
+    allPages.Parent = Body
+    allPages.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
+    allPages.BackgroundTransparency = 0.5
+    allPages.BorderSizePixel = 0
+    allPages.Position = UDim2.new(0.29508087, 0, 0.100775197, 0)
+    allPages.Size = UDim2.new(0, 463, 0, 464)
 
-local sidebarCorner = Instance.new("UICorner")
-sidebarCorner.CornerRadius = UDim.new(0, 4)
-sidebarCorner.Name = "sidebarCorner"
-sidebarCorner.Parent = SideBar
-
--- Sidebar line
-local sbLine = Instance.new("Frame")
-sbLine.Name = "sbLine"
-sbLine.Parent = SideBar
-sbLine.BackgroundColor3 = Color3.fromRGB(0, 40, 100)
-sbLine.BorderSizePixel = 0
-sbLine.Position = UDim2.new(0.99490571, 0, 0, 0)
-sbLine.Size = UDim2.new(0, 3, 0, 516)
-
--- Top bar
-local TopBar = Instance.new("Frame")
-TopBar.Name = "TopBar"
-TopBar.Parent = Body
-TopBar.BackgroundColor3 = Color3.fromRGB(0, 85, 255)
-TopBar.BackgroundTransparency = 1.0
-TopBar.BorderColor3 = Color3.fromRGB(14, 21, 32)
-TopBar.BorderSizePixel = 0
-TopBar.Position = UDim2.new(0.25166446, 0, 0, 0)
-TopBar.Size = UDim2.new(0, 562, 0, 49)
-
--- Top bar line
-local tbLine = Instance.new("Frame")
-tbLine.Name = "tbLine"
-tbLine.Parent = TopBar
-tbLine.BackgroundColor3 = Color3.fromRGB(0, 60, 120)
-tbLine.BorderSizePixel = 0
-tbLine.Position = UDim2.new(0.0400355868, 0, 1, 0)
-tbLine.Size = UDim2.new(0, 469, 0, 3)
-
--- Title
-local Title = Instance.new("TextLabel")
-Title.Name = "Title"
-Title.Parent = SideBar
-Title.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
-Title.BackgroundTransparency = 1.000
-Title.BorderSizePixel = 0
-Title.Position = UDim2.new(0.0614973232, 0, 0.0213178284, 0)
-Title.Size = UDim2.new(0, 162, 0, 26)
-Title.Font = Enum.Font.ArialBold
-Title.Text = options.text
-Title.TextColor3 = Color3.fromRGB(234, 239, 245)
-Title.TextSize = 28.000
-Title.TextWrapped = true
-
--- All Pages
-local allPages = Instance.new("Frame")
-allPages.Name = "allPages"
-allPages.Parent = Body
-allPages.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
-allPages.BackgroundTransparency = 1.000
-allPages.BorderSizePixel = 0
-allPages.Position = UDim2.new(0.29508087, 0, 0.100775197, 0)
-allPages.Size = UDim2.new(0, 463, 0, 464)
-
--- Tab container
-local tabContainer = Instance.new("Frame")
-tabContainer.Name = "tabContainer"
-tabContainer.Parent = SideBar
-tabContainer.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
-tabContainer.BackgroundTransparency = 1.000
-tabContainer.BorderSizePixel = 0
-tabContainer.Position = UDim2.new(0, 0, 0.100775197, 0)
-tabContainer.Size = UDim2.new(0, 187, 0, 464)
-
+    tabContainer.Name = "tabContainer"
+    tabContainer.Parent = SideBar
+    tabContainer.BackgroundColor3 = Color3.fromRGB(234, 239, 245)
+    tabContainer.BackgroundTransparency = 0.5
+    tabContainer.BorderSizePixel = 0
+    tabContainer.Position = UDim2.new(0, 0, 0.100775197, 0)
+    tabContainer.Size = UDim2.new(0, 187, 0, 464)
 
     local tabsections = {}
 
